@@ -10,9 +10,12 @@
 import CategoryItem from './CategoryItem.vue';
     export default {
     name: "CategoryList",
+    props: {
+        selected: Number
+    },
     data() {
         return {
-            selected: 0,
+            
             categories: [
                 {   
                     id: 0,
@@ -40,7 +43,7 @@ import CategoryItem from './CategoryItem.vue';
     components: { CategoryItem },
     methods: {
         select(id) {
-            this.selected = id
+            this.$emit('selected', id)
         }
     }
 }

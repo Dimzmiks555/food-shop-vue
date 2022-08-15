@@ -2,7 +2,7 @@
     <div>
         <h2>Вкусная еда</h2>
         <div class="food_list">
-            <FoodItem v-for="item in food" :item="item"></FoodItem>
+            <FoodItem v-for="item in filteredFood" :item="item"></FoodItem>
         </div>
     </div>
 </template>
@@ -10,8 +10,12 @@
 import FoodItem from "./FoodItem.vue";
 export default {
     name: "FoodList",
+    props: {
+        selected: Number
+    },
     data() {
         return {
+            filteredFood: [],
             food: [
                 {
                     id: 1,
@@ -51,6 +55,21 @@ export default {
                 },
             ]
         };
+    },
+    watch: {
+        selected(newSelected, oldSelected) {
+
+            if (newSelected == 0) {
+                this.filteredFood = this.food
+            } else {
+                this.filteredFood = this.food.filter(item => item.category_id == newSelected)
+            }
+
+
+        }
+    },
+    mounted(){
+        this.filteredFood = this.food
     },
     components: { FoodItem }
 }

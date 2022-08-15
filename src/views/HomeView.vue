@@ -6,8 +6,8 @@
           <h1>Добро пожаловать! 😎</h1>
           <div></div>
         </div>
-        <CategoryList></CategoryList>
-        <FoodList></FoodList>
+        <CategoryList :selected="selected" @selected="select"></CategoryList>
+        <FoodList :selected="selected"></FoodList>
       </div>
       <div class="right">
           <Cart></Cart>
@@ -28,6 +28,16 @@ import ArticleList from '@/components/ArticleList.vue';
 import Cart from '@/components/Cart.vue';
 
 export default {
+  data() {
+    return {
+      selected: 0
+    }
+  },
+  methods: {
+    select(id) {
+        this.selected = id
+    }
+  },
   name: 'HomeView',
   components: {
     Layout,
@@ -36,7 +46,7 @@ export default {
     Offer,
     ArticleList,
     Cart
-}
+  }
 }
 </script>
 
