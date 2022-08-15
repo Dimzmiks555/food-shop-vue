@@ -1,21 +1,28 @@
 <template>
     <div class="cart">
-        <button>
-            <img src="https://api.iconify.design/akar-icons/cart.svg?color=white">
+        <button @click="showCart">
+            <img v-if="!cartOpened" src="https://api.iconify.design/akar-icons/cart.svg?color=white">
+            <img v-else src="https://api.iconify.design/akar-icons/cross.svg?color=white">
             <div v-if="cart.length > 0" class="badge">{{cart.length}}</div>
         </button>
-        
     </div>
 </template>
 <script>
 export default {
     props: {
-        cart: Array
+        cart: Array,
+        cartOpened: Boolean
+    },
+    methods: {
+        showCart() {
+            this.$emit('showed', true)
+        }
     }
 }
 </script>
 <style scoped>
     .cart {
+        z-index: 10;
         width: 100%;
         margin-bottom: 20px;
         display: flex;

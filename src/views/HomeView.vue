@@ -10,9 +10,12 @@
         <FoodList :cart="cart"  @deletedFromCart="deleteFromCart" @addedToCart="addToCart" :filteredFood="filteredFood" :selected="selected"></FoodList>
       </div>
       <div class="right">
-          <Cart :cart="cart"></Cart>
-          <Offer></Offer>
-          <ArticleList></ArticleList>
+          <Cart :cartOpened="cartOpened" @showed="showCard" :cart="cart"></Cart>
+          <div v-if="!cartOpened">
+            <Offer></Offer>
+            <ArticleList></ArticleList>
+          </div>
+          <CartBlock :cart="cart" :food="food" v-else></CartBlock>
       </div>
     </div>
   </Layout>
@@ -29,11 +32,13 @@ import Cart from '@/components/Cart.vue';
 import Search from '@/components/Search.vue';
 import _food from '@/mockups/_food';
 import _categories from '@/mockups/_categories';
+import CartBlock from '@/components/CartBlock.vue';
 
 export default {
   data() {
     return {
       selected: 0,
+      cartOpened: false,
       cart: [],
       search: '',
       categories: _categories,
@@ -53,11 +58,13 @@ export default {
     },
     addToCart(id){
         this.cart.push(id)
-        console.log(id)
     },
     deleteFromCart(id) {
         console.log(this.cart.filter(item => item != id))
         this.cart = this.cart.filter(item => item != id)
+    },
+    showCard() {
+      this.cartOpened = !this.cartOpened
     }
   },
 
@@ -84,7 +91,8 @@ export default {
     Offer,
     ArticleList,
     Cart,
-    Search
+    Search,
+    CartBlock
 }
 }
 </script>
