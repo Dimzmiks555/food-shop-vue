@@ -5,7 +5,10 @@
         <p>{{item.desc}}</p>
         <div class="footer">
             <span>${{item.price}}</span>
-            <button>+</button>
+            <button v-if="!cart.includes(item.id)" @click="addToCart">+</button>
+            <button @mouseover="showDelete()" class="added" v-else-if="showedDelete == false && cart.includes(item.id)" @click="addToCart">✔</button>
+            <button v-else-if="showedDelete == true && cart.includes(item.id)" @mouseleave="hideDelete()"  @click="deleteFromCart">✗</button>
+
         </div>
     </div>
 </template>
@@ -13,8 +16,29 @@
 <script>
 export default {
     name: 'FoodItem',
+    data(){
+        return {
+            showedDelete: false
+        }
+    },
+    methods: {
+        addToCart() {
+            this.$emit('addedToCart', this.item.id)
+        },
+        deleteFromCart() {
+            
+            this.$emit('deletedFromCart', this.item.id)
+        },
+        showDelete() {
+            this.showedDelete = true
+        },
+        hideDelete() {
+            this.showedDelete = false
+        }
+    },
     props: {
-        item: Object
+        item: Object,
+        cart: Array
     }
 }
 </script>
@@ -59,6 +83,8 @@ export default {
         border: 2px #335 solid ;
     }
 
+    
+
     .food_item .footer button:hover {
         background: #556;
         border: 2px #556 solid ;
@@ -68,6 +94,17 @@ export default {
         object-fit: scale-down;
         height: 180px;
         width: auto;
+    }
+
+    .food_item .footer .added {
+        color: #335;
+        background: #fff;
+        border: 2px #335 solid ;
+    }
+    .food_item .footer .added:hover {
+        color: #335;
+        background: #fff;
+        border: 2px #335 solid ;
     }
 
 </style>

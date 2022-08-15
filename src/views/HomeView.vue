@@ -4,13 +4,13 @@
       <div class="left">
         <div class="header">
           <h1>Добро пожаловать! 😎</h1>
-          <div></div>
+          <Search @searched="searchFood" :search="search"></Search>
         </div>
-        <CategoryList :selected="selected" @selected="select"></CategoryList>
-        <FoodList :selected="selected"></FoodList>
+        <CategoryList :categories="categories" :selected="selected" @selected="select"></CategoryList>
+        <FoodList :cart="cart"  @deletedFromCart="deleteFromCart" @addedToCart="addToCart" :filteredFood="filteredFood" :selected="selected"></FoodList>
       </div>
       <div class="right">
-          <Cart></Cart>
+          <Cart :cart="cart"></Cart>
           <Offer></Offer>
           <ArticleList></ArticleList>
       </div>
@@ -26,17 +26,55 @@ import FoodList from '@/components/FoodList.vue';
 import Offer from '@/components/Offer.vue';
 import ArticleList from '@/components/ArticleList.vue';
 import Cart from '@/components/Cart.vue';
+import Search from '@/components/Search.vue';
+import _food from '@/mockups/_food';
+import _categories from '@/mockups/_categories';
 
 export default {
   data() {
     return {
-      selected: 0
+      selected: 0,
+      cart: [],
+      search: '',
+      categories: _categories,
+      filteredFood: [],
+      food: _food
     }
+    
   },
   methods: {
     select(id) {
         this.selected = id
+    },
+    searchFood(value) {
+      
+        this.selected = 0
+        this.filteredFood = this.food.filter(item => item.title.toLocaleLowerCase().search(value.toLocaleLowerCase()) !== -1)
+    },
+    addToCart(id){
+        this.cart.push(id)
+        console.log(id)
+    },
+    deleteFromCart(id) {
+        console.log(this.cart.filter(item => item != id))
+        this.cart = this.cart.filter(item => item != id)
     }
+  },
+
+  watch: {
+      selected(newSelected, oldSelected) {
+
+          if (newSelected == 0) {
+              this.filteredFood = this.food
+          } else {
+              this.filteredFood = this.food.filter(item => item.category_id == newSelected)
+          }
+
+
+      }
+  },
+  mounted(){
+      this.filteredFood = this.food
   },
   name: 'HomeView',
   components: {
@@ -45,14 +83,16 @@ export default {
     FoodList,
     Offer,
     ArticleList,
-    Cart
-  }
+    Cart,
+    Search
+}
 }
 </script>
 
 <style scoped>
   .header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
   }
 

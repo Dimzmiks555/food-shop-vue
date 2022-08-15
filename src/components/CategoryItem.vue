@@ -12,7 +12,6 @@ export default {
     },
     methods: {
         select(){
-            console.log('selected')
             this.$emit('selected', this.item.id)
         }
     }
@@ -42,11 +41,12 @@ export default {
 
     .active {
         background: #fff;
-        border: 2px solid #ccc;
+        box-shadow: 0 4px 10px #ddd;
+        /* border: 2px solid #ccc; */
     }
     .active:hover {
         background: #fff;
-        border: 2px solid #ccc;
+        /* border: 2px solid #ccc; */
     }
 
 </style>
